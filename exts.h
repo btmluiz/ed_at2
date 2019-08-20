@@ -38,21 +38,42 @@ class exts {
 
             struct disciplinas{
                 string nome;
-                int av1;
-                int av2;
-                int av3;
+                double av[3];
              } dis[3];
         };
 
-        static void ex3(){
+        bool devmod;
+
+        bool getDevmod(){
+            return this->devmod;
+        }
+
+        exts (bool dev){
+            devmod = dev;
+        }
+
+        void ex3(){
             struct bm bandas[5], aux;
             string tipo[5] = {"pop", "rock", "indie", "brega", "funk"};
 
-            for(int i=4; i >= 0; i--){
-                bandas[i].nome = "Banda " + to_string(i+1);
-                bandas[i].rank = i;
-                bandas[i].num = 4+i;
-                bandas[i].tipo = tipo[i];
+            if(this->devmod){
+                for(int i = 4; i >= 0; i--){
+                    bandas[i].nome = "Banda " + to_string(i+1);
+                    bandas[i].rank = i;
+                    bandas[i].num = 4+i;
+                    bandas[i].tipo = tipo[i];
+                }
+            } else {
+                for (int i = 0; i < 5; i++) {
+                    cout << "Digite o nome da Banda: ";
+                    cin >> bandas[i].nome;
+                    cout << "Rank: ";
+                    cin >> bandas[i].rank;
+                    cout << "Integrantes: ";
+                    cin >> bandas[i].num;
+                    cout << "Estilo: ";
+                    cin >> bandas[i].tipo;
+                }
             }
 
             for(int i=4; i > 0; i--){
@@ -73,28 +94,61 @@ class exts {
             }
         }
 
-        static void ex4(){
+        void ex4(){
             struct alunos al[3];
+            double aux, media;
 
-            for (int i = 0; i < 3; ++i) {
-                al[i].nome = "Aluno " + to_string(i+1);
-                al[i].curso = "Curso " + to_string(i+1);
-                for (int j = 0; j < 3; ++j) {
-                    al[i].dis[j].nome = "Dis " + to_string(j+1);
-                    al[i].dis[j].av1 = j + 5;
-                    al[i].dis[j].av2 = j + 4;
-                    al[i].dis[j].av3 = j + 6;
+            if (this->devmod) {
+                for (int i = 0; i < 3; i++) {
+                    al[i].nome = "Aluno " + to_string(i+1);
+                    al[i].curso = "Curso " + to_string(i+1);
+                    for (int j = 0; j < 3; ++j) {
+                        al[i].dis[j].nome = "Dis " + to_string(j+1);
+                        for (int k = 0; k < 3; k++) {
+                            al[i].dis[j].av[k] = 10 - k;
+                        }
+                    }
+                }
+            } else {
+                for (int i =0; i < 3; i++){
+                    cout << "Aluno: ";
+                    cin >> al[i].nome;
+                    cout << "Curso: ";
+                    cin >> al[i].curso;
+                    for (int j = 0; j < 3; j++) {
+                        cout << "Nome da discplina: ";
+                        cin >> al[i].dis[j].nome;
+                        for (int k = 0; k < 3; ++k) {
+                            cout << "Nota da AV" << k+1 << ": ";
+                            cin >> al[i].dis[j].av[k];
+                        }
+                    }
                 }
             }
 
-            for (int i = 0; i < 3; ++i) {
+            for (int i = 0; i < 5; i++) {
+                for (int j = 0; j < 3; j++) {
+                    for (int k = 4; k > 0; k--) {
+                        for (int l = 0; l < k; l++) {
+                            if(al[i].dis[j].av[l+1] > al[i].dis[j].av[l]){
+                                aux = al[i].dis[j].av[l];
+                                al[i].dis[j].av[l] = al[i].dis[j].av[l+1];
+                                al[i].dis[j].av[l] = aux;
+                            }
+                        }
+                    }
+                }
+            }
+
+            for (int i = 0; i < 3; i++) {
                 cout << "Aluno: " << al[i].nome << endl;
                 cout << "Curso: " << al[i].curso << endl;
                 for (int j = 0; j < 3; ++j) {
                     cout << " Disciplina: " << al[i].dis[j].nome << endl;
-                    cout << "  Av1: " << al[i].dis[j].av1 << endl;
-                    cout << "  Av2: " << al[i].dis[j].av2 << endl;
-                    cout << "  Av3: " << al[i].dis[j].av3 << endl;
+                    for (int k = 0; k < 3; ++k) {
+                        cout << "  Av" << k+1 << ": " << al[i].dis[j].av[k] << endl;
+                    }
+                    cout << "  Media(" << al[i].dis[j].av[0] << "/" << al[i].dis[j].av[1] << "): " << (al[i].dis[j].av[0]+al[i].dis[j].av[1])/2 << endl;
                 }
                 cout << endl;
             }
